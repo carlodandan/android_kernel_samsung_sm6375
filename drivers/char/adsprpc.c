@@ -1235,9 +1235,9 @@ static int fastrpc_mmap_remove(struct fastrpc_file *fl, int fd, uintptr_t va,
 	}
 	hlist_for_each_entry_safe(map, n, &fl->maps, hn) {
 		/* Remove if only one reference map and no context map */
-		if (map->refs == 1 && !map->ctx_refs &&
-			map->raddr == va && map->raddr + map->len == va + len &&
-			/* Remove map if not used in process initialization */
+		if (map->refs == 1 && !map->ctx_refs && map->raddr == va &&
+			map->raddr + map->len == va + len &&
+			/* Remove map if not used in process initialization*/
 			!map->is_filemap) {
 			match = map;
 			hlist_del_init(&map->hn);
@@ -1276,7 +1276,7 @@ static void fastrpc_mmap_free(struct fastrpc_mmap *map, uint32_t flags)
 				map->flags == ADSP_MMAP_REMOTE_HEAP_ADDR) {
 		spin_lock(&me->hlock);
 		map->refs--;
-		if (!map->refs && !map->is_persistent && !map->ctx_refs)
+		if (!map->refs && !map->ctx_refs && !map->is_persistent)
 			hlist_del_init(&map->hn);
 		spin_unlock(&me->hlock);
 		if (map->refs > 0) {
@@ -4850,7 +4850,7 @@ static int fastrpc_internal_munmap(struct fastrpc_file *fl,
 			"user application %s trying to unmap without initialization\n",
 			current->comm);
 		err = -EHOSTDOWN;
-		goto bail;
+		return err;
 	}
 	mutex_lock(&fl->internal_map_mutex);
 
@@ -4959,6 +4959,7 @@ static int fastrpc_internal_mem_map(struct fastrpc_file *fl,
 	int err = 0;
 	struct fastrpc_mmap *map = NULL;
 
+	mutex_lock(&fl->internal_map_mutex);
 	VERIFY(err, fl->dsp_proc_init == 1);
 	if (err) {
 		pr_err("adsprpc: ERROR: %s: user application %s trying to map without initialization\n",
@@ -4997,6 +4998,7 @@ bail:
 			mutex_unlock(&fl->map_mutex);
 		}
 	}
+	mutex_unlock(&fl->internal_map_mutex);
 	return err;
 }
 
@@ -5006,6 +5008,7 @@ static int fastrpc_internal_mem_unmap(struct fastrpc_file *fl,
 	int err = 0;
 	struct fastrpc_mmap *map = NULL;
 
+	mutex_lock(&fl->internal_map_mutex);
 	VERIFY(err, fl->dsp_proc_init == 1);
 	if (err) {
 		pr_err("adsprpc: ERROR: %s: user application %s trying to map without initialization\n",
@@ -5051,6 +5054,7 @@ bail:
 			mutex_unlock(&fl->map_mutex);
 		}
 	}
+	mutex_unlock(&fl->internal_map_mutex);
 	return err;
 }
 
