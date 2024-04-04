@@ -808,6 +808,15 @@ else
 KBUILD_CFLAGS += $(call cc-option,-Wimplicit-fallthrough,)
 endif
 
+#+P86801AA1-3760,xieshuaishuai.wt,MOD,20230501,WT_FINAL_RELEASE && WT_COMPILE_FACTORY_VERSION.
+ifeq ($(WT_FINAL_RELEASE_KERNEL),yes)
+KBUILD_CFLAGS += -DWT_FINAL_RELEASE
+endif
+ifeq ($(WT_COMPILE_FACTORY_VERSION_KERNEL),yes)
+KBUILD_CFLAGS += -DWT_COMPILE_FACTORY_VERSION
+endif
+#-P86801AA1-3760,xieshuaishuai.wt,MOD,20230502,WT_FINAL_RELEASE && WT_COMPILE_FACTORY_VERSION.
+
 # These warnings generated too much noise in a regular build.
 # Use make W=1 to enable them (see scripts/Makefile.extrawarn)
 KBUILD_CFLAGS += $(call cc-disable-warning, unused-but-set-variable)
