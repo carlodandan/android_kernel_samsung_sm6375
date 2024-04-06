@@ -1,0 +1,6 @@
+. ${ROOT_DIR}/${KERNEL_DIR}/build.config.aarch64
+
+BRANCH=SM6375
+CLANG_PREBUILT_BIN=prebuilts-master/clang/host/linux-x86/clang-r416183b/bin
+DEFCONFIG="vendor/gta9p_eur_openx_defconfig"
+KERNEL_DIR="sm6375"
