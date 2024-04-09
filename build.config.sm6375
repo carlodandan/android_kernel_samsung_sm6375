@@ -1,6 +1,5 @@
 . ${ROOT_DIR}/${KERNEL_DIR}/build.config.aarch64
 
-BRANCH=android11-5.4
 DEFCONFIG="vendor/gta9p_eur_openx_defconfig"
 KERNEL_DIR="sm6375"
 KMI_GENERATION=2
