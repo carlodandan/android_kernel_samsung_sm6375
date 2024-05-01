@@ -77,7 +77,7 @@ struct {
 #define AES_BLOCK_SIZE_FOR_TZ 1024
 #define CMD_GETKEY 1
 #define CMD_REMOVEKEY 2
-#define QSEE_DEVICE_APP_DIR "/vendor/firmware_mnt/image/"
+#define QSEE_DEVICE_APP_DIR "/vendor/etc/firmware/"
 #define QSEE_APP_NAME "wsm"
 #define MZ_PATH_MAX 4096
 

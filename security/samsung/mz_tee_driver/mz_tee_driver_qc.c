@@ -79,7 +79,7 @@ typedef struct _tciMessage_t {
 #define AES_BLOCK_SIZE_FOR_TZ 1024
 #define CMD_MZ_WB_ENCRYPT 0x900
 #define CMD_REMOVEKEY 2
-#define QSEE_DEVICE_APP_DIR "/vendor/firmware_mnt/image/"
+#define QSEE_DEVICE_APP_DIR "/vendor/etc/firmware/"
 #define QSEE_APP_NAME "mz"
 #define MZ_PATH_MAX 4096
 
